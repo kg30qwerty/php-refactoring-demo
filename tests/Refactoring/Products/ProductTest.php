@@ -4,6 +4,8 @@ namespace Tests\Refactoring\Products;
 
 use Brick\Math\BigDecimal;
 use PHPUnit\Framework\TestCase;
+use Refactoring\Products\Description;
+use Refactoring\Products\Price;
 use Refactoring\Products\Product;
 
 class ProductTest extends TestCase
@@ -71,7 +73,9 @@ class ProductTest extends TestCase
      */
     private function productWithPriceAndCounter(BigDecimal $price, int $counter): Product
     {
-        return new Product($price, "desc", "longDesc", $counter);
+        $price = new Price($price);
+        $description = new Description("desc", "longDesc");
+        return new Product($price, $description, $counter);
     }
 
     /**
@@ -81,8 +85,8 @@ class ProductTest extends TestCase
      */
     private function productWithDesc(string $desc, string $longDesc): Product
     {
-        return new Product(BigDecimal::ten(), $desc, $longDesc, 10);
+        $description = new Description($desc, $longDesc);
+        $price = new Price(BigDecimal::ten());
+        return new Product($price, $description, 10);
     }
-
-
 }
