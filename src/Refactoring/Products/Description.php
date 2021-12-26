@@ -1,4 +1,5 @@
 <?php
+
 namespace Refactoring\Products;
 
 class Description

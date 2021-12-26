@@ -1,4 +1,5 @@
 <?php
+
 namespace Refactoring\Products;
 
 use Brick\Math\BigDecimal;
@@ -9,7 +10,6 @@ class Price
      * @var BigDecimal
      */
     private $sum;
-
 
     /**
      * Price constructor.
