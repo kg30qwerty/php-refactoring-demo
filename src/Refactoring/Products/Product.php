@@ -94,8 +94,7 @@ class Product
     {
         return $this->description->format();
     }
-
-
+    
     /**
      * @param int $counterToCheck
      * @throws \Exception
