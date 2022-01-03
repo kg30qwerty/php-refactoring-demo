@@ -65,6 +65,36 @@ class ProductTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function decrementCounterWhenCounterIsZeroThrowException()
+    {
+        $this->expectException(\Exception::class);
+        $product = $this->productWithPriceAndCounter(BigDecimal::ten(), 0);
+        $product->decrementCounter();
+    }
+
+    /**
+     * @test
+     */
+    public function decrementCounterWhenPriceIsZeroThrowException()
+    {
+        $this->expectException(\Exception::class);
+        $product = $this->productWithPriceAndCounter(BigDecimal::zero(), 5);
+        $product->decrementCounter();
+    }
+
+    /**
+     * @test
+     */
+    public function canDecrementCounterWhenPriceAndCounterIsPositive()
+    {
+        $product = $this->productWithPriceAndCounter(BigDecimal::ten(), 5);
+        $product->decrementCounter();
+        $this->assertEquals(4, $product->getCounter());
+    }
+
+    /**
      * @param BigDecimal $price
      * @param int $counter
      * @return Product
