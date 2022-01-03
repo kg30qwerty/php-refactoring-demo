@@ -1,24 +1,56 @@
+Problemy:
 
-Opis:
+1. W konstruktorze, w metodach changePriceTo(), replaceCharFromDesc() argumenty metod mogą przyjmować kilka typów, lepiej zmniejszyć jedynie do przyjmowana jednego typu,
+   ponieważ i tak następuje sprawdzenie, czy dany argument nie jest nullem.
 
-- Stworzenie klas Price i Description do obsługi metod implementujących daną logikę biznesową. Zostaną one pobrane z klasy Product. Dla klasy Price, changePriceTo() oraz odpowiednio
- dla klasy Description, metody replaceCharFromDesc() i formatDesc(). Klasa Product będzie służyć jako agregat. Wykorzystanie tego sposóbu pozwala na rozdzielenie odpowiedzialności.
+2. W metodach formatDesc(), replaceCharFromDesc(), changePriceTo() znajduje się logika biznesowa dotycząca opisów i cen. Lepiej wyciągnąć
+   implementacje do osobnych metod w osobnych klasach. Klasa Product powinna łączyć te elementy w jedną całość.
 
- - usunięcie Nullable types przy argumentach w metodach. Jak widać we wnętrzach metod, nie dopuszczamy aby pola miały wartości null. Usunięcie takich typów spowoduje,
- ograniczenie sprawdzania w metodach czy dany typ jest nullem, a co za tym idzie, zmniejszy się skomplikowanie warunków w ich wnętrzach. W metodzie replaceChar nowo utworzonej klasy Description,
- nie jest konieczne usuwanie Nullable types, ponieważ str_replace dopuszcza w pierwszym argumencie Nulla, ale żeby zachować większą kontrole nad kodem,
- lepiej aby metoda przyjmowała jeden typ
+3. W metodach decrementCounter() oraz incrementCounter() następuje powtórzenie kodu. Sprawdzanie czy counter jest ujemny,
+   czy jest cena dodatnia oraz sprawdzanie czy dana zmienna nie jest nullem. Lepiej tego unikać, ponieważ podczas zmiany warunku,
+   trzeba będzie zmieniać w każdym miejscu, gdzie wykorzystywana jest taka sama linia kodu. Łatwo wtedy o pomyłkę.
 
- - usunięcie powtórzeń kodu. Zostały stworzone metody do sprawdzania czy cena jest prawidłowa, oraz czy prawidłowy jest przelicznik
 
- Description:
 
-- Create Price and Description classes to handle the methods that implement the given business logic. These will be taken from the Product class. For the Price class, changePriceTo() and respectively
- for the Description class, the replaceCharFromDesc() and formatDesc() methods. The Product class will serve as an aggregate. Using this method allows separation of responsibilities.
+Rozwiązanie problemów:
 
- - Removing Nullable types next to arguments in methods. As you can see inside the methods, we do not allow fields to have null values. Removing such types will
- reduce the checking in methods whether the type is null, and thus reduce the complexity of the conditions inside them. In the replaceChar method of the newly created class Description,
- it is not necessary to remove Nullable types, because str_replace allows Null in the first argument, but to keep more control over the code,
- it is better for the method to take one type
+1. Usunięcie Nullable types przy argumentach. Jak widać we wnętrzach metod, nie dopuszczamy aby pola miały wartości null. Usunięcie takich typów spowoduje,
+   ograniczenie sprawdzania w metodach czy dany typ jest nullem, a co za tym idzie, zmniejszy się skomplikowanie warunków w ich wnętrzach.
+   W metodzie replaceChar() nowo utworzonej klasy Description, nie jest konieczne usuwanie Nullable types, ponieważ str_replace dopuszcza w pierwszym argumencie Nulla,
+   ale żeby zachować większą kontrole nad kodem, lepiej aby metoda przyjmowała jeden typ.
 
- - removing code repetitions. Methods have been created to check if the price is correct (is not Invalid price), and if the counter is correct (is not negative counter)
+2. Stworzenie klas Price i Description do obsługi metod implementujących daną logikę biznesową. Zostaną one pobrane z klasy Product.
+   Dla klasy Price, changePriceTo() oraz odpowiednio dla klasy Description, metody replaceCharFromDesc() i formatDesc().
+   Klasa Product będzie wywoływać dane metody z obydwu klas nie naruszając interfejsu klasy Product. Wykorzystanie tego sposóbu pozwala na rozdzielenie odpowiedzialności.
+
+3. Usunięcie powtórzeń kodu. Zostały stworzone metody checkCorrect() w klasie Price do sprawdzania czy cena jest prawidłowa, oraz checkIfCounterIsNegative() w klasie Product,
+   która sprawdza czy przelicznik nie jest liczbą ujemną.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Problems:
+
+1. In constructor, in changePriceTo(), replaceCharFromDesc() methods arguments can take several types, better to reduce only to take one type,
+   because anyway the check if the argument is not null is performed.
+
+2. In methods formatDesc(), replaceCharFromDesc(), changePriceTo() there is business logic concerning descriptions and prices. It is better to extract
+   implementations into separate methods in separate classes. Product class should combine these elements into one.
+
+3. In methods decrementCounter() and incrementCounter() there is repetition of code. Checking if counter is negative,
+   if it is positive and checking if the variable is not null. It is better to avoid this, because when changing the condition,
+   will have to be changed in every place where the same line of code is used. It is then easy to make a mistake.
+
+
+Problem solving:
+
+1. Remove Nullable types next to arguments. As you can see inside the methods, we do not allow fields to have null values. Removing such types will cause,
+   reduce the checking in methods whether the type is null, and thus reduce the complexity of the conditions inside them.
+   In the replaceChar() method of the newly created Description class, it is not necessary to remove Nullable types, because str_replace allows Nulls in the first argument,
+   but to keep more control over the code, it is better for the method to take one type.
+
+2. Create Price and Description classes to handle the methods that implement the given business logic. These will be taken from the Product class.
+   For Price class, changePriceTo() and respectively for Description class, replaceCharFromDesc() and formatDesc() methods.
+   The Product class will call the methods from both classes without affecting the Product class interface. Using this method allows separation of responsibilities.
+
+3. Remove code repetition. There are created methods checkCorrect() in class Price to check if price is correct and checkIfCounterIsNegative() in class Product,
+   class, which checks if the counter is not a negative number.

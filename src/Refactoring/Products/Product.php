@@ -14,6 +14,11 @@ class Product
     private $serialNumber;
 
     /**
+     * @var int
+     */
+    private $counter;
+
+    /**
      * @var Price
      */
     private $price;
@@ -24,22 +29,26 @@ class Product
     private $description;
 
     /**
-     * @var int
-     */
-    private $counter;
-
-    /**
      * Product constructor.
-     * @param Price $price
-     * @param Description $description
+     * @param BigDecimal $price
+     * @param string $desc
+     * @param string $longDesc
      * @param int $counter
      */
-    public function __construct(Price $price, Description $description, int $counter)
+    public function __construct(BigDecimal $price, string $desc, string $longDesc, int $counter)
     {
         $this->serialNumber = Uuid::uuid4();
-        $this->price = $price;
-        $this->description = $description;
         $this->counter = $counter;
+        $this->description = new Description($desc, $longDesc);
+        $this->price = new Price($price);
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getSerialNumber(): UuidInterface
+    {
+        return $this->serialNumber;
     }
 
     /**
@@ -51,11 +60,19 @@ class Product
     }
 
     /**
-     * @return UuidInterface
+     * @return string
      */
-    public function getSerialNumber(): UuidInterface
+    public function getDesc(): string
     {
-        return $this->serialNumber;
+        return $this->description->getDesc();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongDesc(): string
+    {
+        return $this->description->getLongDesc();
     }
 
     /**
@@ -94,7 +111,7 @@ class Product
     {
         return $this->description->format();
     }
-    
+
     /**
      * @param int $counterToCheck
      * @throws \Exception

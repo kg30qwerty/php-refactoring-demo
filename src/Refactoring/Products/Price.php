@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Refactoring\Products;
 
@@ -13,7 +14,7 @@ class Price
 
     /**
      * Price constructor.
-     * @param BigDecimal $price
+     * @param BigDecimal $sum
      */
     public function __construct(BigDecimal $sum)
     {
